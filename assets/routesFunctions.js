@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { v4 as uuidv4 } from 'uuid';
 import { collections, databaseName, serverAnswers } from './assets/const.js';
 
@@ -63,12 +63,12 @@ const transactionsGet = async (req, res) => {
     }
     const user = await users.findOne({ _id: session.userId });
 
-    if (user) {
-      delete user.password;
-      const userTransactions = transactions.find({ userId: user._id });
-      return res.send({ user, userTransactions });
+    if (!user) {
+      return res.sendStatus(serverAnswers.transactions.userNotFound.code);
     }
-    return res.sendStatus(serverAnswers.transactions.userNotFound.code);
+    delete user.password;
+    const userTransactions = transactions.find({ userId: user._id });
+    return res.send({ user, userTransactions });
   } catch (error) {
     return res.sendStatus(serverAnswers.databaseProblem.code);
   }
@@ -81,12 +81,11 @@ const transactionPost = async (req, res) => {
   if (!token) {
     return res.sendStatus(serverAnswers.transactions.unauthorized.code);
   }
-  const way = req.params;
+  const way = req.params.way.toLowerCase();
   const { description, date } = req.body;
-  let value = Math.abs(parseInt(req.body.value, 10));
+  const value = Math.abs(parseInt(req.body.value, 10));
   // VALIDATE DATA
 
-  value = way === 'In' ? value : -value;
   try {
     const session = await sessions.findOne({ token });
 
@@ -94,9 +93,10 @@ const transactionPost = async (req, res) => {
       return res.sendStatus(serverAnswers.transactions.unauthorized.code);
     }
     await transactions.insertOne({
-      _id: session.userId,
+      userId: session.userId,
       value,
       description,
+      way,
       date,
     });
   } catch (error) {
@@ -104,4 +104,43 @@ const transactionPost = async (req, res) => {
   }
 };
 
-export { signUpPost, signInPost, transactionsGet, transactionPost };
+const transactionPut = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.sendStatus(serverAnswers.transactions.unauthorized.code);
+  }
+  const { id } = req.params;
+  const { description, date, way } = req.body;
+  const value = Math.abs(parseInt(req.body.value, 10));
+  // VALIDATE DATA
+
+  try {
+    const session = await sessions.findOne({ token });
+
+    if (!session) {
+      return res.sendStatus(serverAnswers.transactions.unauthorized.code);
+    }
+    const { modifiedCount } = await transactions.updateOne(
+      { $and: [{ _id: ObjectId(id) }, { userId: session.userId }] },
+      { $set: { value, description, way, date } }
+    );
+    if (modifiedCount === 0) {
+      return res.sendStatus(
+        serverAnswers.transactions.transactionNotFound.code
+      );
+    }
+    return res.sendStatus(serverAnswers.transactions.transactionUpdated.code);
+  } catch (error) {
+    return res.sendStatus(serverAnswers.databaseProblem.code);
+  }
+};
+
+export {
+  signUpPost,
+  signInPost,
+  transactionsGet,
+  transactionPost,
+  transactionPut,
+};

@@ -40,7 +40,11 @@ const serverAnswers = {
     userNotFound: {
       code: 404,
     },
-    msgCreated: {
+    // USED
+    transactionNotFound: {
+      code: 404,
+    },
+    transactionUpdated: {
       code: 201,
     },
   },

@@ -5,6 +5,7 @@ import {
   signInPost,
   signUpPost,
   transactionPost,
+  transactionPut,
   transactionsGet
 } from './assets/routesFunctions';
 
@@ -17,4 +18,5 @@ server.use(cors());
 server.post('/sing-up', signUpPost);
 server.post('/sing-in', signInPost);
 server.get('/transactions', transactionsGet);
-server.post('/transaction:way', transactionPost);
+server.post('/transaction/:way', transactionPost);
+server.put('/transaction/:id', transactionPut);
