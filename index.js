@@ -4,6 +4,7 @@ import express from 'express';
 import {
   signInPost,
   signUpPost,
+  transactionDelete,
   transactionPost,
   transactionPut,
   transactionsGet
@@ -20,3 +21,4 @@ server.post('/sing-in', signInPost);
 server.get('/transactions', transactionsGet);
 server.post('/transaction/:way', transactionPost);
 server.put('/transaction/:id', transactionPut);
+server.delete('/transaction/:id', transactionDelete);

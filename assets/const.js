@@ -44,6 +44,7 @@ const serverAnswers = {
     transactionNotFound: {
       code: 404,
     },
+    // USED
     transactionUpdated: {
       code: 201,
     },

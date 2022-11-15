@@ -137,10 +137,41 @@ const transactionPut = async (req, res) => {
   }
 };
 
+const transactionDelete = async (req, res) => {
+  const { authorization } = req.headers;
+  const token = authorization?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.sendStatus(serverAnswers.transactions.unauthorized.code);
+  }
+  const { id } = req.params;
+  // VALIDATE DATA
+
+  try {
+    const session = await sessions.findOne({ token });
+
+    if (!session) {
+      return res.sendStatus(serverAnswers.transactions.unauthorized.code);
+    }
+    const { deletedCount } = await transactions.deleteOne({
+      $and: [{ _id: ObjectId(id) }, { userId: session.userId }],
+    });
+    if (deletedCount === 0) {
+      return res.sendStatus(
+        serverAnswers.transactions.transactionNotFound.code
+      );
+    }
+    return res.sendStatus(serverAnswers.transactions.transactionUpdated.code);
+  } catch (error) {
+    return res.sendStatus(serverAnswers.databaseProblem.code);
+  }
+};
+
 export {
   signUpPost,
   signInPost,
   transactionsGet,
   transactionPost,
   transactionPut,
+  transactionDelete,
 };
