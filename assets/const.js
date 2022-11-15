@@ -46,7 +46,7 @@ const serverAnswers = {
     },
     // USED
     transactionUpdated: {
-      code: 201,
+      code: 200,
     },
   },
   deleteMsgs: {

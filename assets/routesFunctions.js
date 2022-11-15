@@ -40,7 +40,11 @@ const signInPost = async (req, res) => {
     const user = await users.findOne({ email });
     if (user && bcrypt.compareSync(password, user.password)) {
       const token = uuidv4();
-      await sessions.insertOne({ token, userId: user._id });
+      await sessions.insertOne({
+        token,
+        userId: user._id,
+        lastSeen: Date.now(),
+      });
       return res.send(token);
     }
     return res.sendStatus(serverAnswers.login.userNotFound.code);
@@ -55,12 +59,14 @@ const transactionsGet = async (req, res) => {
   if (!token) {
     return res.sendStatus(serverAnswers.transactions.unauthorized.code);
   }
+
   try {
     const session = await sessions.findOne({ token });
-
     if (!session) {
       return res.sendStatus(serverAnswers.transactions.unauthorized.code);
     }
+    sessions.updateOne({ token }, { $set: { lastSeen: Date.now() } });
+
     const user = await users.findOne({ _id: session.userId });
 
     if (!user) {
@@ -92,6 +98,8 @@ const transactionPost = async (req, res) => {
     if (!session) {
       return res.sendStatus(serverAnswers.transactions.unauthorized.code);
     }
+    sessions.updateOne({ token }, { $set: { lastSeen: Date.now() } });
+
     await transactions.insertOne({
       userId: session.userId,
       value,
@@ -122,6 +130,8 @@ const transactionPut = async (req, res) => {
     if (!session) {
       return res.sendStatus(serverAnswers.transactions.unauthorized.code);
     }
+    sessions.updateOne({ token }, { $set: { lastSeen: Date.now() } });
+
     const { modifiedCount } = await transactions.updateOne(
       { $and: [{ _id: ObjectId(id) }, { userId: session.userId }] },
       { $set: { value, description, way, date } }
@@ -153,6 +163,8 @@ const transactionDelete = async (req, res) => {
     if (!session) {
       return res.sendStatus(serverAnswers.transactions.unauthorized.code);
     }
+    sessions.updateOne({ token }, { $set: { lastSeen: Date.now() } });
+
     const { deletedCount } = await transactions.deleteOne({
       $and: [{ _id: ObjectId(id) }, { userId: session.userId }],
     });
