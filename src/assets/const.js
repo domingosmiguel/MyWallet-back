@@ -1,8 +1,8 @@
 const databaseName = 'myWallet';
-const collections = {
+const collectionsName = {
   users: 'users',
   sessions: 'sessions',
-  transactions: 'transactions',
+  records: 'records',
 };
 
 const serverAnswers = {
@@ -20,33 +20,40 @@ const serverAnswers = {
     // USED
     userCreated: {
       code: 201,
+      message: 'teste',
     },
   },
   login: {
     // USED
     userNotFound: {
       code: 404,
+      message: 'teste',
     },
     success: {
       code: 200,
     },
   },
-  transactions: {
+  records: {
     // USED
     unauthorized: {
       code: 401,
+      message: 'Transaction not authorized',
     },
     // USED
     userNotFound: {
       code: 404,
     },
     // USED
-    transactionNotFound: {
+    recordNotFound: {
       code: 404,
     },
     // USED
-    transactionUpdated: {
+    recordUpdated: {
       code: 200,
+    },
+    // USED
+    recordCreated: {
+      code: 201,
     },
   },
   deleteMsgs: {
@@ -77,4 +84,4 @@ const serverAnswers = {
     },
   },
 };
-export { databaseName, collections, serverAnswers };
+export { databaseName, collectionsName, serverAnswers };

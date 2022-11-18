@@ -1,11 +1,12 @@
 {
   "author": "Miguel Domingos",
   "name": "MyWallet-back",
-  "version": "1.0",
-  "main": "index.js",
+  "version": "1.0.0",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon -L src/index.js",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
