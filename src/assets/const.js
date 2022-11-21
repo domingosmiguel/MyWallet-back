@@ -6,81 +6,45 @@ const collectionsName = {
 };
 
 const serverAnswers = {
-  databaseProblem: { code: 500 }, // USED
+  databaseProblem: { code: 500 },
   newUser: {
     invalidUser: {
       code: 422,
-      message: 'Apelido deve ter entre 3 e 20 caracteres',
     },
-    // USED
     userAlreadyExists: {
       code: 409,
-      message: 'Usuário já existe',
+      message: 'User already exists',
     },
-    // USED
     userCreated: {
       code: 201,
-      message: 'teste',
+      message: 'created',
     },
   },
   login: {
-    // USED
     userNotFound: {
       code: 404,
-      message: 'teste',
-    },
-    success: {
-      code: 200,
+      message: 'not found',
     },
   },
   records: {
-    // USED
     unauthorized: {
       code: 401,
       message: 'Transaction not authorized',
     },
-    // USED
     userNotFound: {
       code: 404,
     },
-    // USED
     recordNotFound: {
       code: 404,
     },
-    // USED
     recordUpdated: {
       code: 200,
     },
-    // USED
     recordCreated: {
       code: 201,
     },
-  },
-  deleteMsgs: {
-    msgNotFound: {
-      code: 404,
-    },
-    userNotOwner: {
-      code: 401,
-    },
-    msgDeleted: {
-      code: 200,
-    },
-  },
-  editMsgs: {
-    invalidMsg: {
+    invalidData: {
       code: 422,
-      message:
-        "'to' e 'text' devem ser strings não vazias, 'type' só pode ser 'message' ou 'private_message', 'from' deve ser um participante existente na lista de participantes.",
-    },
-    msgNotFound: {
-      code: 404,
-    },
-    userNotOwner: {
-      code: 401,
-    },
-    msgEdited: {
-      code: 200,
     },
   },
 };

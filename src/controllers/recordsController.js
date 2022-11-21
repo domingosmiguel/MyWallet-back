@@ -1,25 +1,11 @@
 import { ObjectId } from 'mongodb';
 import { serverAnswers } from '../assets/const.js';
-import {
-  usersCollection,
-  sessionsCollection,
-  recordsCollection,
-} from '../database/db.js';
+import { usersCollection, recordsCollection } from '../database/db.js';
 
 const recordsGet = async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer ', '');
-  if (!token) {
-    return res.sendStatus(serverAnswers.records.unauthorized.code);
-  }
+  const { session } = res.locals;
 
   try {
-    const session = await sessionsCollection.findOne({ token });
-    if (!session) {
-      return res.sendStatus(serverAnswers.records.unauthorized.code);
-    }
-    sessionsCollection.updateOne({ token }, { $set: { lastSeen: Date.now() } });
-
     const user = await usersCollection.findOne({ _id: session.userId });
 
     if (!user) {
@@ -36,27 +22,10 @@ const recordsGet = async (req, res) => {
   }
 };
 const recordPost = async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer ', '');
-
-  if (!token) {
-    return res
-      .status(serverAnswers.records.unauthorized.code)
-      .send(serverAnswers.records.unauthorized.message);
-  }
-  const way = req.params.way.toLowerCase();
-  const { description, date } = req.body;
-  const value = Math.abs(parseFloat(req.body.value)).toFixed(2);
-  // VALIDATE DATA
+  const { session } = res.locals;
+  const { value, description, way, date } = res.locals.body;
 
   try {
-    const session = await sessionsCollection.findOne({ token });
-
-    if (!session) {
-      return res.sendStatus(serverAnswers.records.unauthorized.code);
-    }
-    sessionsCollection.updateOne({ token }, { $set: { lastSeen: Date.now() } });
-
     await recordsCollection.insertOne({
       userId: session.userId,
       value,
@@ -71,20 +40,9 @@ const recordPost = async (req, res) => {
   }
 };
 const recordEditGet = async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer ', '');
-  if (!token) {
-    return res.sendStatus(serverAnswers.records.unauthorized.code);
-  }
+  const { session } = res.locals;
   const { id } = req.params;
   try {
-    const session = await sessionsCollection.findOne({ token });
-
-    if (!session) {
-      return res.sendStatus(serverAnswers.records.unauthorized.code);
-    }
-    sessionsCollection.updateOne({ token }, { $set: { lastSeen: Date.now() } });
-
     const record = await recordsCollection.findOne({
       $and: [{ _id: ObjectId(id) }, { userId: session.userId }],
     });
@@ -97,25 +55,12 @@ const recordEditGet = async (req, res) => {
   }
 };
 const recordEditPut = async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer ', '');
+  const { session } = res.locals;
+  const { value, description, way, date } = res.locals.body;
 
-  if (!token) {
-    return res.sendStatus(serverAnswers.records.unauthorized.code);
-  }
   const { id } = req.params;
-  const { description, date, way } = req.body;
-  const value = Math.abs(parseFloat(req.body.value)).toFixed(2);
-  // VALIDATE DATA
 
   try {
-    const session = await sessionsCollection.findOne({ token });
-
-    if (!session) {
-      return res.sendStatus(serverAnswers.records.unauthorized.code);
-    }
-    sessionsCollection.updateOne({ token }, { $set: { lastSeen: Date.now() } });
-
     const { modifiedCount } = await recordsCollection.updateOne(
       { $and: [{ _id: ObjectId(id) }, { userId: session.userId }] },
       { $set: { value, description, way, date } }
@@ -129,23 +74,10 @@ const recordEditPut = async (req, res) => {
   }
 };
 const recordDelete = async (req, res) => {
-  const { authorization } = req.headers;
-  const token = authorization?.replace('Bearer ', '');
-
-  if (!token) {
-    return res.sendStatus(serverAnswers.records.unauthorized.code);
-  }
+  const { session } = res.locals;
   const { id } = req.params;
-  // VALIDATE DATA
 
   try {
-    const session = await sessionsCollection.findOne({ token });
-
-    if (!session) {
-      return res.sendStatus(serverAnswers.records.unauthorized.code);
-    }
-    sessionsCollection.updateOne({ token }, { $set: { lastSeen: Date.now() } });
-
     const { deletedCount } = await recordsCollection.deleteOne({
       $and: [{ _id: ObjectId(id) }, { userId: session.userId }],
     });

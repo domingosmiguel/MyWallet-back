@@ -6,13 +6,19 @@ import {
   recordEditPut,
   recordsGet,
 } from '../controllers/recordsController.js';
+import authValidationMiddleware from '../middleware/authValidationMiddleware.js';
+import newRecordValidationMiddleware from '../middleware/newRecordValidationMiddleware.js';
 
 const router = Router();
+router.use(authValidationMiddleware);
 
 router.get('/records', recordsGet);
-router.post('/record/:way', recordPost);
 router.get('/record/edit/:id', recordEditGet);
-router.put('/record/edit/:id', recordEditPut);
 router.delete('/record/delete/:id', recordDelete);
+
+router.use(newRecordValidationMiddleware);
+
+router.post('/record/:way', recordPost);
+router.put('/record/edit/:id', recordEditPut);
 
 export default router;

@@ -4,8 +4,8 @@ import { serverAnswers } from '../assets/const.js';
 import { usersCollection, sessionsCollection } from '../database/db.js';
 
 const signUpPost = async (req, res) => {
-  const { name, email, password } = req.body;
-  // VALIDATE DATA
+  const { name, email, password } = res.locals.body;
+
   try {
     const user = await usersCollection.findOne({ email });
     if (user !== null) {
@@ -23,16 +23,16 @@ const signUpPost = async (req, res) => {
   }
 };
 const signInPost = async (req, res) => {
-  const { email, password } = req.body;
-  // VALIDATE DATA
+  const { email, password } = res.locals.body;
   try {
     const user = await usersCollection.findOne({ email });
     if (user && bcrypt.compareSync(password, user.password)) {
+      await sessionsCollection.deleteOne({ userId: user._id });
+
       const token = uuidv4();
       await sessionsCollection.insertOne({
         token,
         userId: user._id,
-        lastSeen: Date.now(),
       });
       return res.send(token);
     }
