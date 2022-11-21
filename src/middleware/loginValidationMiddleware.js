@@ -3,10 +3,6 @@ import { serverAnswers } from '../assets/const.js';
 
 export default function loginValidationMiddleware(req, res, next) {
   const { body } = req;
-  console.log(
-    '🚀 ~ file: loginValidationMiddleware.js ~ line 6 ~ loginValidationMiddleware ~ body',
-    body
-  );
 
   const { email, password } = body;
 
