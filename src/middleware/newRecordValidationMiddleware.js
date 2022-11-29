@@ -1,7 +1,7 @@
 import recordDataSchema from '../schemas/recordDataSchema.js';
 import { serverAnswers } from '../assets/const.js';
 
-export default async function newRecordValidationMiddleware(req, res, next) {
+export default function newRecordValidationMiddleware(req, res, next) {
   const { body } = req;
   body.way = body.way?.toLowerCase() || req.params.way?.toLowerCase();
   body.value = parseFloat(body.value).toFixed(2);
