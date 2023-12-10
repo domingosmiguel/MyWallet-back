@@ -48,6 +48,10 @@ const serverAnswers = {
       code: 201,
       message: 'record created',
     },
+    recordDeleted: {
+      code: 204,
+      message: 'record deleted',
+    },
     invalidData: {
       code: 422,
       message: 'invalid data',

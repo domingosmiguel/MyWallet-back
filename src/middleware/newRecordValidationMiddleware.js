@@ -1,5 +1,5 @@
-import recordDataSchema from '../schemas/recordDataSchema.js';
 import { serverAnswers } from '../assets/const.js';
+import recordDataSchema from '../schemas/recordDataSchema.js';
 
 export default function newRecordValidationMiddleware(req, res, next) {
   const { body } = req;
@@ -15,7 +15,10 @@ export default function newRecordValidationMiddleware(req, res, next) {
 
   if (validation.error) {
     const erros = validation.error.details.map((detail) => detail.message);
-    return res.status(serverAnswers.records.invalidData.code).send(erros);
+    console.error(erros);
+    return res
+      .status(serverAnswers.records.invalidData.code)
+      .send(serverAnswers.records.invalidData.message);
   }
 
   res.locals.body = body;

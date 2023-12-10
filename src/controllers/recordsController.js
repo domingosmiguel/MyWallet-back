@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { serverAnswers } from '../assets/const.js';
-import { usersCollection, recordsCollection } from '../database/db.js';
+import { recordsCollection, usersCollection } from '../database/db.js';
 
 const recordsGet = async (req, res) => {
   const { session } = res.locals;
@@ -34,7 +34,9 @@ const recordPost = async (req, res) => {
       date,
       timeCreated: Date.now(),
     });
-    return res.sendStatus(serverAnswers.records.recordCreated.code);
+    return res
+      .status(serverAnswers.records.recordCreated.code)
+      .send(serverAnswers.records.recordCreated.message);
   } catch (error) {
     return res.sendStatus(serverAnswers.databaseProblem.code);
   }
@@ -47,7 +49,9 @@ const recordEditGet = async (req, res) => {
       $and: [{ _id: ObjectId(id) }, { userId: session.userId }],
     });
     if (!record) {
-      return res.sendStatus(serverAnswers.records.recordNotFound.code);
+      return res
+        .status(serverAnswers.records.recordNotFound.code)
+        .send(serverAnswers.records.recordNotFound.message);
     }
     return res.send(record);
   } catch (error) {
@@ -66,9 +70,13 @@ const recordEditPut = async (req, res) => {
       { $set: { value, description, way, date } }
     );
     if (modifiedCount === 0) {
-      return res.sendStatus(serverAnswers.records.recordNotFound.code);
+      return res
+        .status(serverAnswers.records.recordNotFound.code)
+        .send(serverAnswers.records.recordNotFound.message);
     }
-    return res.sendStatus(serverAnswers.records.recordUpdated.code);
+    return res
+      .status(serverAnswers.records.recordUpdated.code)
+      .send(serverAnswers.records.recordUpdated.message);
   } catch (error) {
     return res.sendStatus(serverAnswers.databaseProblem.code);
   }
@@ -82,12 +90,16 @@ const recordDelete = async (req, res) => {
       $and: [{ _id: ObjectId(id) }, { userId: session.userId }],
     });
     if (deletedCount === 0) {
-      return res.sendStatus(serverAnswers.records.recordNotFound.code);
+      return res
+        .status(serverAnswers.records.recordNotFound.code)
+        .send(serverAnswers.records.recordNotFound.message);
     }
-    return res.sendStatus(serverAnswers.records.recordUpdated.code);
+    return res
+      .status(serverAnswers.records.recordDeleted.code)
+      .send(serverAnswers.records.recordDeleted.message);
   } catch (error) {
     return res.sendStatus(serverAnswers.databaseProblem.code);
   }
 };
 
-export { recordsGet, recordPost, recordEditGet, recordEditPut, recordDelete };
+export { recordDelete, recordEditGet, recordEditPut, recordPost, recordsGet };
