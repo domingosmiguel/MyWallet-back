@@ -13,7 +13,9 @@ export default async function authValidationMiddleware(req, res, next) {
   try {
     const session = await sessionsCollection.findOne({ token });
     if (!session) {
-      return res.sendStatus(serverAnswers.records.unauthorized.code);
+      return res
+        .sendStatus(serverAnswers.records.unauthorized.code)
+        .send(serverAnswers.records.unauthorized.message);
     }
     res.locals.session = session;
   } catch (error) {
