@@ -10,14 +10,15 @@ const serverAnswers = {
   newUser: {
     invalidUser: {
       code: 422,
+      message: 'invalid user',
     },
     userAlreadyExists: {
       code: 409,
-      message: 'User already exists',
+      message: 'user already exists',
     },
     userCreated: {
       code: 201,
-      message: 'created',
+      message: 'new user created',
     },
   },
   login: {
@@ -29,23 +30,28 @@ const serverAnswers = {
   records: {
     unauthorized: {
       code: 401,
-      message: 'Transaction not authorized',
+      message: 'transaction not authorized',
     },
     userNotFound: {
       code: 404,
+      message: 'not found',
     },
     recordNotFound: {
       code: 404,
+      message: 'record not found',
     },
     recordUpdated: {
       code: 200,
+      message: 'record updated',
     },
     recordCreated: {
       code: 201,
+      message: 'record created',
     },
     invalidData: {
       code: 422,
+      message: 'invalid data',
     },
   },
 };
-export { databaseName, collectionsName, serverAnswers };
+export { collectionsName, databaseName, serverAnswers };
