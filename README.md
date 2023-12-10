@@ -45,6 +45,10 @@ $ npm dev
 
 5. Finally you can access the api at http://localhost:5000 (or where you instructed it to be)
 
+## Contributing
+
+This is an open-source project! Feel free to contribute by reporting issues and submitting pull requests.
+
 ## Built with
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
