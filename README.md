@@ -1,24 +1,25 @@
-# **MyWallet API**
+# MyWallet API
 
-This API was built to manage all data for MyWallet Saas. 
+### The Backend Engine for MyWallet Saas
 
-## **Exercised Contents**:
+This API powers the MyWallet Saas application, managing all its data efficiently and securely.
 
--   CRUD operations in a noSQL database (MongoDB)
--   Proper error handling
--   Proper HTTP responses for every operation made
+## Capabilities
 
-## **Ideas For The Future**:
+-   **Full CRUD operations:** Create, read, update, and delete financial records seamlessly.
+-   **NoSQL powerhouse:** Leverages the flexibility and scalability of MongoDB for data storage.
+-   **Error-aware:** Handles errors gracefully and provides informative responses.
+-   **Clear communication:** Uses proper HTTP responses to keep clients informed of operation results.
 
--   Layered architecture
--   Unitary tests
--   E2E tests
--   ORM for database management
--   Take user data out of '/records' endpoint response
--   Better data encryption
--   Implement Docker Compose + NGINX
+## Future Roadmap
 
-## **How to run**:
+-   **Layered architecture:** Refactor code for cleaner separation of concerns and maintainability.
+-   **Testing suite:** Implement unit and E2E tests for comprehensive quality assurance.
+-   **Database abstraction:** Introduce an Object-Relational Mapper (ORM) for easier data manipulation.
+-   **Robust encryption:** Implement stronger encryption methods to safeguard user information.
+-   **Deployment flexibility:** Utilize Docker Compose and NGINX for easier containerization and deployment.
+
+## Getting Started
 
 After you configure you MongoDB locally:
 
@@ -44,7 +45,7 @@ $ npm dev
 
 5. Finally you can access the api at http://localhost:5000 (or where you instructed it to be)
 
-## Built with:
+## Built with
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
@@ -54,7 +55,7 @@ $ npm dev
 ![Git](https://img.shields.io/badge/GIT-E44C30?style=for-the-badge&logo=git&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## Contact:
+## Connect with the Developer
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
