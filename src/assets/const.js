@@ -24,7 +24,7 @@ const serverAnswers = {
   login: {
     userNotFound: {
       code: 404,
-      message: 'not found',
+      message: 'user not found',
     },
   },
   records: {
