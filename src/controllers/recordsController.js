@@ -9,7 +9,9 @@ const recordsGet = async (req, res) => {
     const user = await usersCollection.findOne({ _id: session.userId });
 
     if (!user) {
-      return res.sendStatus(serverAnswers.records.userNotFound.code);
+      return res
+        .status(serverAnswers.records.invalidUser.code)
+        .send(serverAnswers.records.invalidUser.message);
     }
     delete user.password;
     const userRecords = await recordsCollection

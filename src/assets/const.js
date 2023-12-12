@@ -22,9 +22,9 @@ const serverAnswers = {
     },
   },
   login: {
-    userNotFound: {
+    invalid: {
       code: 404,
-      message: 'user not found',
+      message: 'invalid email or password',
     },
   },
   records: {
@@ -32,9 +32,9 @@ const serverAnswers = {
       code: 401,
       message: 'transaction not authorized',
     },
-    userNotFound: {
+    invalidUser: {
       code: 404,
-      message: 'not found',
+      message: 'invalid user',
     },
     recordNotFound: {
       code: 404,

@@ -39,8 +39,8 @@ const signInPost = async (req, res) => {
       return res.send(token);
     }
     return res
-      .status(serverAnswers.login.userNotFound.code)
-      .send(serverAnswers.login.userNotFound.message);
+      .status(serverAnswers.login.invalid.code)
+      .send(serverAnswers.login.invalid.message);
   } catch (error) {
     return res.sendStatus(serverAnswers.databaseProblem.code);
   }
@@ -74,4 +74,4 @@ const googleLoginPost = async (req, res) => {
   }
 };
 
-export { signUpPost, signInPost, googleLoginPost };
+export { googleLoginPost, signInPost, signUpPost };
